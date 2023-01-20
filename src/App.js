@@ -15,7 +15,7 @@ const app = new Clarifai.App({
 const stub = ClarifaiStub.grpc();
 
 const metadata = new grpc.Metadata();
-metadata.set("authorization", "e244becc576241ecaf5169a4c9c444fb");
+metadata.set("authorization", "#");
 
 class App extends Component {
   constructor() {
