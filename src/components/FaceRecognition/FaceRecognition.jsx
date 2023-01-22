@@ -1,8 +1,11 @@
 import React from 'react'
 
-const FaceRecognition = () => {
+const FaceRecognition = ({imageUrl}) => {
   return (
-    <div>FaceRecognition</div>
+    <div className='flex justify-center'>
+      <img src={imageUrl} alt="entered img" />
+      <p>FaceRecognition</p>
+    </div>
   )
 }
 
