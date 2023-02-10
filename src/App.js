@@ -12,14 +12,13 @@ import Rank from './components/Rank/Rank';
 // of the image we want as an input. Change these strings to run your own example.
 /////////////////////////////////////////////////////////////////////////////////////////
 
-const USER_ID = '';
+const USER_ID = 'anguyen0615';
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
 const PAT = '';
 const APP_ID = 'face-recognication';
 // Change these to whatever model and image URL you want to use
 const MODEL_ID = 'face-detection';
 const MODEL_VERSION_ID = 'aa7f35c01e0642fda5cf400f543e7c40';    
-const IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg';
 
 class App extends Component {
   constructor() {
@@ -35,9 +34,7 @@ onInputChange = (e) => {
 }
 
 onSubmit = () => {
-
   this.setState({imageURL: this.state.input});
-  console.log('imageUrl:', this.state.imageURL);
 
   const raw = JSON.stringify({
       "user_app_id": {
@@ -48,15 +45,12 @@ onSubmit = () => {
           {
               "data": {
                   "image": {
-                      "url": IMAGE_URL
+                      "url": this.state.input
                   }
               }
           }
       ]
   });
-
-  
-  console.log('IMAGE_URL:', IMAGE_URL);
 
   const requestOptions = {
       method: 'POST',
@@ -73,7 +67,7 @@ onSubmit = () => {
 
   fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => console.log(JSON.parse(result).outputs[0].data.regions[0].region_info.bounding_box))
       .catch(error => console.log('error', error));
 }
 
