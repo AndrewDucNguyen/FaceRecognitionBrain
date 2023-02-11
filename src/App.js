@@ -7,19 +7,6 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// In this section, we set the user authentication, app ID, model details, and the URL
-// of the image we want as an input. Change these strings to run your own example.
-/////////////////////////////////////////////////////////////////////////////////////////
-
-const USER_ID = 'anguyen0615';
-// Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = '';
-const APP_ID = 'face-recognication';
-// Change these to whatever model and image URL you want to use
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = 'aa7f35c01e0642fda5cf400f543e7c40';    
-
 class App extends Component {
   constructor() {
     super();
@@ -38,8 +25,8 @@ onSubmit = () => {
 
   const raw = JSON.stringify({
       "user_app_id": {
-          "user_id": USER_ID,
-          "app_id": APP_ID
+          "user_id": process.env.REACT_APP_USER_ID,
+          "app_id": process.env.REACT_APP_APP_ID
       },
       "inputs": [
           {
@@ -56,16 +43,12 @@ onSubmit = () => {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
-          'Authorization': 'Key ' + PAT
+          'Authorization': 'Key ' + process.env.REACT_APP_PAT
       },
       body: raw
   };
 
-  // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-  // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-  // this will default to the latest version_id
-
-  fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
+  fetch("https://api.clarifai.com/v2/models/" + process.env.REACT_APP_MODEL_ID + "/outputs", requestOptions)
       .then(response => response.text())
       .then(result => console.log(JSON.parse(result).outputs[0].data.regions[0].region_info.bounding_box))
       .catch(error => console.log('error', error));
