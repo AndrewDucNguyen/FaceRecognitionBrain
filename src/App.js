@@ -12,47 +12,60 @@ class App extends Component {
     super();
     this.state = {
       input: '',
-      imageURL: ''
+      imageURL: '',
+      box: {
+
+      }
     }
   }
 
-onInputChange = (e) => {
-  this.setState({input: e.target.value});
-}
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = JSON.parse(data).outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputImage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      
+    }
+  }
 
-onSubmit = () => {
-  this.setState({imageURL: this.state.input});
+  onInputChange = (e) => {
+    this.setState({input: e.target.value});
+  }
 
-  const raw = JSON.stringify({
-      "user_app_id": {
-          "user_id": process.env.REACT_APP_USER_ID,
-          "app_id": process.env.REACT_APP_APP_ID
-      },
-      "inputs": [
-          {
-              "data": {
-                  "image": {
-                      "url": this.state.input
-                  }
-              }
-          }
-      ]
-  });
+  onSubmit = () => {
+    this.setState({imageURL: this.state.input});
 
-  const requestOptions = {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Key ' + process.env.REACT_APP_PAT
-      },
-      body: raw
-  };
+    const raw = JSON.stringify({
+        "user_app_id": {
+            "user_id": process.env.REACT_APP_USER_ID,
+            "app_id": process.env.REACT_APP_APP_ID
+        },
+        "inputs": [
+            {
+                "data": {
+                    "image": {
+                        "url": this.state.input
+                    }
+                }
+            }
+        ]
+    });
 
-  fetch("https://api.clarifai.com/v2/models/" + process.env.REACT_APP_MODEL_ID + "/outputs", requestOptions)
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Key ' + process.env.REACT_APP_PAT
+        },
+        body: raw
+    };
+
+    fetch("https://api.clarifai.com/v2/models/" + process.env.REACT_APP_MODEL_ID + "/outputs", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(JSON.parse(result).outputs[0].data.regions[0].region_info.bounding_box))
+      .then(result => this.calculateFaceLocation(result))
       .catch(error => console.log('error', error));
-}
+  }
 
   render() {
     return (

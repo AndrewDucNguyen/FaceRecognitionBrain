@@ -4,7 +4,7 @@ const FaceRecognition = ({imageUrl}) => {
   return (
     <div className='flex justify-center'>
       <div className='absolute mt-2'>
-        <img className=' w-96 h-auto' src={imageUrl} alt="entered img" />
+        <img id='inputImage' className=' w-96 h-auto' src={imageUrl} alt="entered img" />
       </div>
     </div>
   )
