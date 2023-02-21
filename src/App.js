@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
+
+// Component imports
 import ParticlesBg from 'particles-bg';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
